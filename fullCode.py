@@ -14,6 +14,7 @@ top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
 
 
+#Add Shape formats
 # SHAPE FORMATS
 
 S = [['.....',

@@ -1,5 +1,6 @@
 import pygame
 import random
+#from shapeFormat import shapeFormat
 
 # pygame setup
 pygame.init()
@@ -8,8 +9,8 @@ clock = pygame.time.Clock()
 
 s_width = 800
 s_height = 700
-play_width = 500  # meaning 300 // 10 = 30 width per block
-play_height = 500  # meaning 600 // 10 = 30 height per block
+play_width = 300  # red border
+play_height = 300  # meaning 600 // 10 = 30 height per block
 block_size = 50
 
 top_left_x = (s_width - play_width) // 2
@@ -17,10 +18,63 @@ top_left_y = s_height - play_height
 
 sx = 150
 sy = 100
+gridx = 6
+gridy = 6
 
+
+S = [['.....',
+      '.....',
+      '..00.',
+      '.00..',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..00.',
+      '...0.',
+      '.....']]
+
+Z = [['.....',
+      '.....',
+      '.00..',
+      '..00.',
+      '.....'],
+     ['.....',
+      '..0..',
+      '.00..',
+      '.0...',
+      '.....']]
+
+
+shapes = [S, Z]
+shape_colors = [(0, 255, 0), (255, 0, 0)]
+# index 0 - 6 represent shape
+
+
+class Piece(object):  # *
+    def __init__(self, x, y, shape):
+        self.x = x
+        self.y = y
+        self.shape = shape
+        self.color = shape_colors[shapes.index(shape)]
+        self.rotation = 0
+
+
+def get_shape():
+    S = Piece(5, 0, shapes[0])
+    Z = Piece(5, 0, shapes[1])
+    return [S, Z]
+
+def draw_shapes(surface, shape):
+    format = shape.shape[shape.rotation % len(shape.shape)]
+
+    for i, line in enumerate(format):
+        row = list(line)
+        for j, column in enumerate(row):
+            if column == '0':
+                pygame.draw.rect(surface, shape.color, (sx + j*block_size, sy + i*block_size, block_size, block_size), 0)
 
 def create_grid(locked_pos={}):  
-    grid = [[(0,0,0) for x in range(10)] for y in range(10)]
+    grid = [[(0,0,0) for x in range(gridx)] for y in range(gridy)]
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -35,6 +89,7 @@ def draw_grid(surface, grid):
         pygame.draw.line(surface, (128,128,128), (sx, sy + i*block_size), (sx+play_width, sy+ i*block_size))
         for j in range(len(grid[i])):
             pygame.draw.line(surface, (128, 128, 128), (sx + j*block_size, sy),(sx + j*block_size, sy + play_height))
+
 
 def draw_window(surface, grid):
     
@@ -56,14 +111,21 @@ def main(screen):
     grid = create_grid(locked_positions)
 
     activeBox = None
-    boxes = []
+    shapeList = []
+    
+    """
     for i in range(5):
         x = random.randint(50,700)
         y = random.randint(50,350)
         w = 50
         h = 50
-        box = pygame.Rect(x, y, w, h)
-        boxes.append(box)
+        box = pygame.Rect(x, y, w, h)"""
+    shape = Piece(5, 0, shapes[0])
+    shapeList.append(shape)
+    shape = Piece(5, 0, shapes[1])
+    shapeList.append(shape)
+
+        
 
 
     running = True
@@ -72,13 +134,13 @@ def main(screen):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    for num, box in enumerate(boxes):
-                        if box.collidepoint(event.pos):
+                    for num, shape in enumerate(shapeList):
+                        if shape.collidepoint(event.pos):
                             activeBox = num
 
             if event.type == pygame.MOUSEMOTION:
                 if activeBox != None:
-                    boxes[activeBox].move_ip(event.rel)
+                    shapeList[activeBox].move_ip(event.rel)
 
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
@@ -91,19 +153,21 @@ def main(screen):
 
         screen.fill((255, 255, 255))
         draw_window(screen, create_grid(locked_positions))
-        for box in boxes:
+        """
+        for box in shapeList:
             pygame.draw.rect(screen, "blue", box)
             pygame.draw.rect(screen, "black", box, 2)
+            """
+        for shape in shapeList:
+            draw_shapes(screen, shape)
+       
 
         
         
         clock.tick(60)
 
         pygame.display.update()
-    # fill the screen with a color to wipe away anything from last frame
-
-    # RENDER YOUR GAME HERE
-    
+        pygame.display.flip()
 
     # flip() the display to put your work on screen
 
