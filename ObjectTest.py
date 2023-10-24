@@ -52,8 +52,7 @@ shape_colors = [(0, 255, 0), (255, 0, 0)]
 
 class Piece(object):  # *
     def __init__(self, x, y, shape):
-        self.x = x
-        self.y = y
+        self.rect = pygame.Rect(x, y, block_size, block_size)
         self.shape = shape
         self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0
@@ -120,11 +119,14 @@ def main(screen):
         w = 50
         h = 50
         box = pygame.Rect(x, y, w, h)"""
-    shape = Piece(5, 0, shapes[0])
+    
+    shape = Piece(50, 50, shapes[0])
     shapeList.append(shape)
+    
+    """
     shape = Piece(5, 0, shapes[1])
     shapeList.append(shape)
-
+"""
         
 
 
@@ -135,11 +137,12 @@ def main(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     for num, shape in enumerate(shapeList):
-                        if shape.collidepoint(event.pos):
+                        if shape.rect.collidepoint(event.pos):
                             activeBox = num
 
             if event.type == pygame.MOUSEMOTION:
                 if activeBox != None:
+                    print(event.rel)
                     shapeList[activeBox].move_ip(event.rel)
 
             if event.type == pygame.MOUSEBUTTONUP:
@@ -150,6 +153,7 @@ def main(screen):
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
+                quit()
 
         screen.fill((255, 255, 255))
         draw_window(screen, create_grid(locked_positions))
