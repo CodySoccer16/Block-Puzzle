@@ -16,7 +16,7 @@ block_size = 50
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
 
-sx = 150
+sx = 100
 sy = 100
 gridx = 6
 gridy = 6
@@ -70,7 +70,9 @@ def draw_shapes(surface, shape):
         row = list(line)
         for j, column in enumerate(row):
             if column == '0':
+                shapeRect = pygame.Rect(sx + j*block_size, sy + i*block_size, block_size, block_size)
                 pygame.draw.rect(surface, shape.color, (sx + j*block_size, sy + i*block_size, block_size, block_size), 0)
+    return shapeRect
 
 def create_grid(locked_pos={}):  
     grid = [[(0,0,0) for x in range(gridx)] for y in range(gridy)]
@@ -137,12 +139,12 @@ def main(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     for num, shape in enumerate(shapeList):
-                        if shape.rect.collidepoint(event.pos):
+                        if shape.rect.collidepoint(event.pos): # This is where the error is, it never turns true
+                            print("True")
                             activeBox = num
 
             if event.type == pygame.MOUSEMOTION:
                 if activeBox != None:
-                    print(event.rel)
                     shapeList[activeBox].move_ip(event.rel)
 
             if event.type == pygame.MOUSEBUTTONUP:
