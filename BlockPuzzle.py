@@ -99,7 +99,6 @@ def main(screen):
 
     running = True
     while running:
-        #grid = create_grid(locked_positions)
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -123,7 +122,6 @@ def main(screen):
                 quit()
 
         screen.fill((0, 0, 0))
-        #draw_window(screen, create_grid(locked_positions))
 
         gridRectList = []
         for x in range(100, 400, block_size):
