@@ -21,6 +21,9 @@ sy = 100
 gridx = 6
 gridy = 6
 
+def createGridRect():
+    pass
+
 
 def create_grid(locked_pos={}):  
     grid = [[(0,0,0) for x in range(gridx)] for y in range(gridy)]
@@ -58,6 +61,7 @@ def draw_window(surface, grid):
 def main(screen):
     locked_positions = {}
     grid = create_grid(locked_positions)
+    createGridRect()
 
     activeBox = None
     shapeList = []
@@ -118,9 +122,18 @@ def main(screen):
                 pygame.quit()
                 quit()
 
-        screen.fill((255, 255, 255))
+        screen.fill((0, 0, 0))
         draw_window(screen, create_grid(locked_positions))
-        
+
+        gridRectList = []
+        for x in range(0, play_width, block_size):
+            for y in range(0, play_height, block_size):
+                rect = pygame.Rect(x, y, block_size, block_size)
+                gridRectList.append(rect)
+
+        for rect in gridRectList:
+            pygame.draw.rect(screen, "Red", rect, 1)
+
         for blocker in blockerList:
             pygame.draw.rect(screen, "Pink", blocker)
 
