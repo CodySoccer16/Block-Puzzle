@@ -22,58 +22,6 @@ gridx = 6
 gridy = 6
 
 
-S = [['.....',
-      '.....',
-      '..00.',
-      '.00..',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..00.',
-      '...0.',
-      '.....']]
-
-Z = [['.....',
-      '.....',
-      '.00..',
-      '..00.',
-      '.....'],
-     ['.....',
-      '..0..',
-      '.00..',
-      '.0...',
-      '.....']]
-
-
-shapes = [S, Z]
-shape_colors = [(0, 255, 0), (255, 0, 0)]
-# index 0 - 6 represent shape
-
-
-class Piece(object):  # *
-    def __init__(self, x, y, shape):
-        self.rect = pygame.Rect(x, y, block_size, block_size)
-        self.shape = shape
-        self.color = shape_colors[shapes.index(shape)]
-        self.rotation = 0
-
-
-def get_shape():
-    S = Piece(5, 0, shapes[0])
-    Z = Piece(5, 0, shapes[1])
-    return [S, Z]
-
-def draw_shapes(surface, shape):
-    format = shape.shape[shape.rotation % len(shape.shape)]
-
-    for i, line in enumerate(format):
-        row = list(line)
-        for j, column in enumerate(row):
-            if column == '0':
-                shapeRect = pygame.Rect(sx + j*block_size, sy + i*block_size, block_size, block_size)
-                pygame.draw.rect(surface, shape.color, (sx + j*block_size, sy + i*block_size, block_size, block_size), 0)
-    return shapeRect
-
 def create_grid(locked_pos={}):  
     grid = [[(0,0,0) for x in range(gridx)] for y in range(gridy)]
 
@@ -113,24 +61,37 @@ def main(screen):
 
     activeBox = None
     shapeList = []
-    
-    """
-    for i in range(5):
-        x = random.randint(50,700)
-        y = random.randint(50,350)
-        w = 50
-        h = 50
-        box = pygame.Rect(x, y, w, h)"""
-    
-    shape = Piece(50, 50, shapes[0])
-    shapeList.append(shape)
-    
-    """
-    shape = Piece(5, 0, shapes[1])
-    shapeList.append(shape)
-"""
-        
 
+    x = 500
+    y = 500
+    box = pygame.Rect(x,y, 50, 50) #iterate through a list of positions with variables 
+    shapeList.append(box) #for width and height to not repeat code
+    box = pygame.Rect(x,y, 100, 50)
+    shapeList.append(box)
+    box = pygame.Rect(x, y, 150, 150)
+    shapeList.append(box)
+    box = pygame.Rect(x, y, 100, 100)
+    shapeList.append(box)
+    box = pygame.Rect(x, y, 200, 50)
+    shapeList.append(box)
+    box = pygame.Rect(x, y, 150, 50)
+    shapeList.append(box)
+    box = pygame.Rect(x, y, 50, 100)
+    shapeList.append(box)
+    box = pygame.Rect(x, y, 50, 150)
+    shapeList.append(box)
+    box = pygame.Rect(x, y, 50, 200)
+    shapeList.append(box)
+
+    blockerList = [] 
+    blocker1 = pygame.Rect(150, 100, 50, 50) #Make these random from a list of spots that works
+    blockerList.append(blocker1)
+    blocker2 = pygame.Rect(200, 250, 50, 50)
+    blockerList.append(blocker2)
+    blocker3 = pygame.Rect(300, 100, 50, 50)
+    blockerList.append(blocker3)
+    blocker4 = pygame.Rect(350, 200, 50, 50)
+    blockerList.append(blocker4)
 
     running = True
     while running:
@@ -138,8 +99,8 @@ def main(screen):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    for num, shape in enumerate(shapeList):
-                        if shape.rect.collidepoint(event.pos): # This is where the error is, it never turns true
+                    for num, box in enumerate(shapeList):
+                        if box.collidepoint(event.pos):
                             print("True")
                             activeBox = num
 
@@ -159,15 +120,14 @@ def main(screen):
 
         screen.fill((255, 255, 255))
         draw_window(screen, create_grid(locked_positions))
-        """
+        
+        for blocker in blockerList:
+            pygame.draw.rect(screen, "Pink", blocker)
+
         for box in shapeList:
             pygame.draw.rect(screen, "blue", box)
             pygame.draw.rect(screen, "black", box, 2)
-            """
-        for shape in shapeList:
-            draw_shapes(screen, shape)
-       
-
+        
         
         
         clock.tick(60)
