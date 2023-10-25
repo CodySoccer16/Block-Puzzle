@@ -11,7 +11,7 @@ s_width = 800
 s_height = 700
 play_width = 300  # red border
 play_height = 300  # meaning 600 // 10 = 30 height per block
-block_size = 50
+block_size = 51
 
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
@@ -88,18 +88,18 @@ def main(screen):
     shapeList.append(box)
 
     blockerList = [] 
-    blocker1 = pygame.Rect(150, 100, 50, 50) #Make these random from a list of spots that works
+    blocker1 = pygame.Rect(151, 101, 50, 50) #Make these random from a list of spots that works
     blockerList.append(blocker1)
-    blocker2 = pygame.Rect(200, 250, 50, 50)
+    blocker2 = pygame.Rect(203, 254, 50, 50)
     blockerList.append(blocker2)
-    blocker3 = pygame.Rect(300, 100, 50, 50)
+    blocker3 = pygame.Rect(304, 101, 50, 50)
     blockerList.append(blocker3)
-    blocker4 = pygame.Rect(350, 200, 50, 50)
+    blocker4 = pygame.Rect(355, 203, 50, 50)
     blockerList.append(blocker4)
 
     running = True
     while running:
-        grid = create_grid(locked_positions)
+        #grid = create_grid(locked_positions)
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -123,11 +123,11 @@ def main(screen):
                 quit()
 
         screen.fill((0, 0, 0))
-        draw_window(screen, create_grid(locked_positions))
+        #draw_window(screen, create_grid(locked_positions))
 
         gridRectList = []
-        for x in range(0, play_width, block_size):
-            for y in range(0, play_height, block_size):
+        for x in range(100, 400, block_size):
+            for y in range(100, 400, block_size):
                 rect = pygame.Rect(x, y, block_size, block_size)
                 gridRectList.append(rect)
 
