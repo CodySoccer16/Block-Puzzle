@@ -32,7 +32,6 @@ def main(screen):
     
     box = pygame.Rect(x,y, 50, 50) #1x1 - iterate through a list of positions with variables 
     shapeList.append(box) #for width and height to not repeat code
-
     box = pygame.Rect(x, y + 75, 100, 50) #2x1
     shapeList.append(box)
     box = pygame.Rect(x, y + 300, 150, 150) #3x3
@@ -68,6 +67,7 @@ def main(screen):
                     for num, box in enumerate(shapeList):
                         if box.collidepoint(event.pos):
                             activeBox = num
+                            activeBoxTopLeft = box.topleft
 
             if event.type == pygame.MOUSEMOTION:
                 if activeBox != None:
@@ -78,6 +78,11 @@ def main(screen):
                     for rect in gridRectList:
                         if rect.collidepoint(event.pos):
                             shapeList[activeBox].topleft = rect.topleft
+                            for blocker in blockerList:
+                                if shapeList[activeBox].contains(blocker):
+                                    shapeList[activeBox].topleft = activeBoxTopLeft
+                                #shapeList[activeBox].topleft = (50,50)
+
                 if event.button == 1:
                     activeBox = None
 
@@ -87,7 +92,7 @@ def main(screen):
                 pygame.quit()
                 quit()
 
-        screen.fill((0, 0, 0))
+        screen.fill((255,255,255))
 
         gridRectList = []
         for x in range(100, 400, block_size):
@@ -96,6 +101,7 @@ def main(screen):
                 gridRectList.append(rect)
 
         for rect in gridRectList:
+            pygame.draw.rect(screen, "Black", rect)
             pygame.draw.rect(screen, "Grey", rect, 1)
             
 
@@ -107,8 +113,6 @@ def main(screen):
         for box in shapeList:
             pygame.draw.rect(screen, shape_colors[shapeList.index(box)] , box)
 
-        for rect in gridRectList:
-                print("yes")
 
         clock.tick(60)
 
