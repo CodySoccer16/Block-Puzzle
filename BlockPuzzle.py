@@ -1,5 +1,5 @@
 import pygame
-import random
+#import random
 #from shapeFormat import shapeFormat
 
 # pygame setup
@@ -81,7 +81,13 @@ def main(screen):
                             for blocker in blockerList:
                                 if shapeList[activeBox].contains(blocker):
                                     shapeList[activeBox].topleft = activeBoxTopLeft
-                                #shapeList[activeBox].topleft = (50,50)
+                            for box in shapeList:
+                                if box != shapeList[activeBox]:
+                                    if shapeList[activeBox].colliderect(box):
+                                        shapeList[activeBox].topleft = activeBoxTopLeft
+                                        
+                                else:
+                                    pass
 
                 if event.button == 1:
                     activeBox = None
@@ -92,7 +98,7 @@ def main(screen):
                 pygame.quit()
                 quit()
 
-        screen.fill((255,255,255))
+        screen.fill((0,0,0))
 
         gridRectList = []
         for x in range(100, 400, block_size):
