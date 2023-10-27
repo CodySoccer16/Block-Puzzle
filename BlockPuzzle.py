@@ -1,9 +1,12 @@
 import pygame
-#import random
-#from shapeFormat import shapeFormat
+from tkinter import * 
+from tkinter import messagebox 
+  
+
 
 # pygame setup
 pygame.init()
+pygame.font.init()
 screen = pygame.display.set_mode((700, 700))
 clock = pygame.time.Clock()
 
@@ -56,6 +59,14 @@ blockerList.append(blocker3)
 blocker4 = pygame.Rect(350, 200, 50, 50)
 blockerList.append(blocker4)
 
+
+my_font = pygame.font.SysFont('Comic Sans MS', 30)
+my_font2 = pygame.font.SysFont('Comic Sans MS', 15)
+winfont = pygame.font.SysFont('Comic Sans MS', 50)
+displayText = my_font.render("Block Puzzle", False, "White")
+instrucText = my_font2.render("Drag the blocks to complete the puzzle", False, "White")
+
+
 gridRectList = []
 for x in range(100, 400, block_size):
     for y in range(100, 400, block_size):
@@ -65,24 +76,17 @@ for x in range(100, 400, block_size):
 def winCheck():
     winner = 0
     winNum = []
-    winCheckList = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
     for blocker in blockerList:
         for box in shapeList:
             for num, rect in enumerate(gridRectList):
                 if rect.colliderect(blocker) or rect.colliderect(box): #needs to test each one not just the first one
                     winNum.append(num)
-    for x in winCheckList:
+    for x in range(36):
         if x in winNum:
             winner += 1
 
     if winner == 36:
-        print("You won")
-
-
-
-
-
-
+        messagebox.showinfo("Winner!", "You Won!")
 
 
 def main(screen):
@@ -138,13 +142,10 @@ def main(screen):
 
         for box in shapeList:
             pygame.draw.rect(screen, shape_colors[shapeList.index(box)] , box)
-        
-        
-        
-            
-        
-            
 
+        
+        screen.blit(displayText, (165, 10))
+        screen.blit(instrucText, (115, 50))
 
         clock.tick(60)
 
